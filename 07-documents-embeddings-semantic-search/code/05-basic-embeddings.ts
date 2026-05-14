@@ -7,7 +7,7 @@
  * - "Can I use different embedding models and how do they compare?"
  */
 
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 function cosineSimilarity(a: number[], b: number[]): number {
@@ -20,11 +20,7 @@ function cosineSimilarity(a: number[], b: number[]): number {
 async function main() {
   console.log("🔢 Basic Embeddings Example\n");
 
-  const embeddings = new OpenAIEmbeddings({
-    model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const embeddings = createEmbeddingsModel();
 
   // Create embeddings for different texts
   const texts = [
