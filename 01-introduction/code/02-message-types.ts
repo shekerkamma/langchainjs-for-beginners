@@ -7,18 +7,14 @@
  * - "How would I add an AIMessage to continue this conversation?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { HumanMessage, SystemMessage } from "langchain";
 import "dotenv/config";
 
 async function main() {
   console.log("🎭 Understanding Message Types\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Using structured messages for better control
   const messages = [
