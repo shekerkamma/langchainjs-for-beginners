@@ -7,7 +7,8 @@
  * - "Can I customize the retry delay and max attempts with withRetry()?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
+import { ChatAnthropic } from "@langchain/anthropic";
 import "dotenv/config";
 
 // Global counter to simulate transient failures (for demonstration only!)
@@ -17,11 +18,7 @@ let attemptCount = 0;
  * Makes an API call with automatic retry logic using LangChain's built-in withRetry()
  */
 async function robustCall(prompt: string, maxRetries = 3): Promise<string> {
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Use LangChain's built-in retry logic - automatically handles retries with exponential backoff
   const modelWithRetry = model.withRetry({
@@ -46,9 +43,8 @@ async function errorExamples() {
   // Example 1: Invalid API key - actually demonstrate the error!
   console.log("\n1️⃣  Example: Invalid API Key\n");
   try {
-    const badModel = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
+    const badModel = new ChatAnthropic({
+      model: process.env.AI_MODEL ?? "claude-sonnet-4-5",
       apiKey: "invalid_key_12345", // Intentionally invalid
     });
 
@@ -69,11 +65,7 @@ async function errorExamples() {
 
   try {
     // Create a model that will fail on first attempt, succeed on second
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-    });
+    const model = createChatModel();
 
     // Add retry logic
     const modelWithRetry = model.withRetry({
@@ -92,9 +84,8 @@ async function errorExamples() {
       // First attempt: fail with invalid key
       if (attemptCount === 1) {
         console.log(`   ❌ Simulating transient failure (invalid credentials)`);
-        const failModel = new ChatOpenAI({
-          model: process.env.AI_MODEL,
-          configuration: { baseURL: process.env.AI_ENDPOINT },
+        const failModel = new ChatAnthropic({
+          model: process.env.AI_MODEL ?? "claude-sonnet-4-5",
           apiKey: "invalid_key_for_demo",
         });
         return await failModel.invoke(input);
@@ -133,11 +124,7 @@ async function errorExamples() {
     // Test with invalid key
     process.env.AI_API_KEY = "sk-invalid12345";
 
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-    });
+    const model = createChatModel();
 
     console.log("🔄 Testing error categorization with invalid credentials...");
     await model.invoke("Hello");
