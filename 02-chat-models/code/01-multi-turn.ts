@@ -7,18 +7,14 @@
  * - "How would I implement a loop to keep the conversation going with user input?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { HumanMessage, AIMessage, SystemMessage, type BaseMessage } from "langchain";
 import "dotenv/config";
 
 async function main() {
   console.log("💬 Multi-Turn Conversation Example\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Start with system message and first question
   const messages: BaseMessage[] = [
