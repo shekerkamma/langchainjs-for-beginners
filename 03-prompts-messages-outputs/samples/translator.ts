@@ -6,15 +6,11 @@
  */
 
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import readline from "readline";
 import "dotenv/config";
 
-const model = new ChatOpenAI({
-  model: process.env.AI_MODEL,
-  configuration: { baseURL: process.env.AI_ENDPOINT },
-  apiKey: process.env.AI_API_KEY,
-});
+const model = createChatModel();
 
 // Translation template with formality support
 const translationTemplate = ChatPromptTemplate.fromMessages([
