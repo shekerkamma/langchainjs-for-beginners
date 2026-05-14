@@ -8,7 +8,7 @@
  * - "Why does the LLM return structured tool calls instead of executing the function?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { tool } from "langchain";
 import * as z from "zod";
 import { evaluate } from "mathjs";
@@ -34,11 +34,7 @@ async function main() {
   console.log("=".repeat(80) + "\n");
 
   // Create model and bind tools
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const modelWithTools = model.bindTools([calculatorTool]);
 
