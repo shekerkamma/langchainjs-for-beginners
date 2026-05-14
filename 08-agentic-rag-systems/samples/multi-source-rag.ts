@@ -7,7 +7,8 @@
  * Run: npx tsx 07-agentic-rag-systems/samples/multi-source-rag.ts
  */
 
-import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../scripts/create-model.js";
+import { createChatModel } from "../../scripts/create-model.js";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { createAgent, HumanMessage, AIMessage, tool } from "langchain";
@@ -65,17 +66,9 @@ async function main() {
   console.log("🗂️  Agentic Multi-Source RAG System\n");
   console.log("=".repeat(80) + "\n");
 
-  const embeddings = new OpenAIEmbeddings({
-    model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const embeddings = createEmbeddingsModel();
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   console.log("📚 Loading multi-source knowledge base...");
   const vectorStore = await MemoryVectorStore.fromDocuments(documents, embeddings);
