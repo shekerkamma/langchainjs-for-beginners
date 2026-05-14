@@ -11,7 +11,7 @@
  * - "What real-world applications benefit from embedding relationships?"
  */
 
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 // Helper function to calculate cosine similarity between two vectors
@@ -39,11 +39,7 @@ async function main() {
   console.log("=".repeat(70) + "\n");
 
   // Initialize embeddings model
-  const embeddings = new OpenAIEmbeddings({
-    model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const embeddings = createEmbeddingsModel();
 
   // ============================================================================
   // Example 1: Animal Life Stages
