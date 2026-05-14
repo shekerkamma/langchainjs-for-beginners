@@ -19,7 +19,7 @@
  * - "Can I connect to multiple MCP servers simultaneously?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { createAgent, HumanMessage } from "langchain";
 import "dotenv/config";
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
@@ -59,11 +59,7 @@ async function main() {
     console.log();
 
     // 3. Create model
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-    });
+    const model = createChatModel();
 
     // 4. Create agent with MCP tools - uses same createAgent() pattern!
     console.log("🤖 Creating agent with MCP tools...\n");
