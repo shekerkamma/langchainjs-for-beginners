@@ -7,7 +7,7 @@
  * - "How would I handle arrays of nested objects in a schema?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import * as z from "zod";
 import "dotenv/config";
@@ -15,11 +15,7 @@ import "dotenv/config";
 async function main() {
   console.log("🏢 Complex Structured Output Example\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Define a complex nested schema
   const CompanySchema = z.object({
