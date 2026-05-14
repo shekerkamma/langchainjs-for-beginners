@@ -1,5 +1,5 @@
 import { createAgent, HumanMessage, tool } from "langchain";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { evaluate } from "mathjs";
 import * as z from "zod";
 import "dotenv/config";
@@ -41,11 +41,7 @@ async function main() {
   console.log("🤖 Agent with createAgent() Example\n");
 
   // Create the model
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Create agent using v1 createAgent() - that's it!
   const agent = createAgent({
