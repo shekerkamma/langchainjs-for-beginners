@@ -4,7 +4,7 @@
  * Run: npx tsx 04-function-calling-tools/solution/weather-tool.ts
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { AIMessage,HumanMessage,ToolMessage,tool } from "langchain";
 import * as z from "zod";
 import "dotenv/config";
@@ -56,11 +56,7 @@ async function main() {
   console.log("⛅ Weather Tool - Complete Execution Loop\n");
   console.log("=".repeat(80) + "\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const modelWithTools = model.bindTools([weatherTool]);
 
