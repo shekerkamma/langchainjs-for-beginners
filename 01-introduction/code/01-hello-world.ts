@@ -6,16 +6,12 @@
  * - "How does the configuration baseURL work with different AI providers?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
 import "dotenv/config";
+import { createChatModel } from "../../scripts/create-model.js";
 
 async function main() {
   console.log("🚀 Hello LangChain.js!\n");
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const response = await model.invoke("What is LangChain in one sentence?");
 
