@@ -7,15 +7,11 @@
  * - "How would I calculate the cost based on token usage?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 async function trackTokenUsage() {
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   console.log("📊 Token Usage Tracking Example\n");
 
