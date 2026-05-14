@@ -35,17 +35,13 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../../scripts/create-model.js";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import "dotenv/config";
 
 // Initialize embeddings and vector store
-const embeddings = new OpenAIEmbeddings({
-  model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-  configuration: { baseURL: process.env.AI_ENDPOINT },
-  apiKey: process.env.AI_API_KEY,
-});
+const embeddings = createEmbeddingsModel();
 
 // Create a vector store - will be initialized before server starts
 let vectorStore: MemoryVectorStore;
