@@ -12,7 +12,8 @@
  * - "What factors should I consider when choosing between RAG and prompt engineering?"
  */
 
-import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../scripts/create-model.js";
+import { createChatModel } from "../../scripts/create-model.js";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
@@ -24,11 +25,7 @@ async function main() {
   console.log("🎯 When to Use RAG: Decision Framework Demo\n");
   console.log("=".repeat(80) + "\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // ============================================================================
   // Scenario 1: Small FAQ (Use Prompt Engineering)
@@ -144,11 +141,7 @@ A: We accept all major credit cards, PayPal, and Apple Pay.
   ];
 
   console.log("Creating vector store from documents...");
-  const embeddings = new OpenAIEmbeddings({
-    model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const embeddings = createEmbeddingsModel();
 
   const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
 
