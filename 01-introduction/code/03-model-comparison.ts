@@ -3,11 +3,11 @@
  * Run: npx tsx 01-introduction/code/03-model-comparison.ts
  *
  * 🤖 Try asking GitHub Copilot Chat (https://github.com/features/copilot):
- * - "Why do we create a new ChatOpenAI instance inside the loop?"
+ * - "Why do we create a new model instance inside the loop?"
  * - "How can I add another model to this comparison?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 async function compareModels() {
@@ -20,12 +20,8 @@ async function compareModels() {
     console.log(`\n📊 Testing: ${modelName}`);
     console.log("─".repeat(50));
 
-    // Override the model for this test
-    const model = new ChatOpenAI({
-      model: modelName,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-    });
+    // Override the model for this comparison test
+    const model = createChatModel({ model: modelName });
 
     const startTime = Date.now();
     const response = await model.invoke(prompt);
