@@ -12,7 +12,8 @@
  * - "How would I add metadata filtering to the retrieval tool?"
  */
 
-import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
+import { createEmbeddingsModel } from "../../scripts/create-model.js";
+import { createChatModel } from "../../scripts/create-model.js";
 import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { createAgent, HumanMessage, tool } from "langchain";
@@ -23,17 +24,9 @@ async function main() {
   console.log("🤖 Agentic RAG System Example\n");
 
   // 1. Setup embeddings and model
-  const embeddings = new OpenAIEmbeddings({
-    model: process.env.AI_EMBEDDING_MODEL || "text-embedding-3-small",
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const embeddings = createEmbeddingsModel();
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // 2. Create knowledge base about LangChain and RAG
   const docs = [
