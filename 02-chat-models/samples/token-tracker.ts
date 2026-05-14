@@ -5,7 +5,8 @@
  * Run: npx tsx 02-chat-models/samples/token-tracker.ts
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
+import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 import "dotenv/config";
 
 interface TokenUsage {
@@ -36,7 +37,7 @@ class TokenTracker {
     return inputCost + outputCost;
   }
 
-  async trackCall(model: ChatOpenAI, query: string): Promise<string> {
+  async trackCall(model: BaseChatModel, query: string): Promise<string> {
     this.callCount++;
 
     console.log(`\n🔄 Call #${this.callCount}: Processing...`);
@@ -156,11 +157,7 @@ async function main() {
   console.log("📊 Token Usage Tracker\n");
   console.log("=".repeat(60) + "\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const tracker = new TokenTracker();
 
