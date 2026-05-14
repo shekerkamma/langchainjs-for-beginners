@@ -7,7 +7,7 @@
  * - "How do I add the maxTokens parameter to limit response length?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 async function temperatureComparison() {
@@ -23,12 +23,7 @@ async function temperatureComparison() {
     console.log(`\nTemperature: ${temp}`);
     console.log("-".repeat(80));
 
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-      temperature: temp,
-    });
+    const model = createChatModel({ temperature: temp });
 
     try {
       for (let i = 1; i <= tries; i++) {
@@ -74,12 +69,7 @@ async function maxTokensExample() {
     console.log(`\nMax Tokens: ${maxTokens}`);
     console.log("-".repeat(80));
 
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL,
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-      maxTokens: maxTokens,
-    });
+    const model = createChatModel({ maxTokens: maxTokens });
 
     try {
       const response = await model.invoke(prompt);
