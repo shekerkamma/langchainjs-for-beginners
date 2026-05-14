@@ -9,7 +9,7 @@
  * - "What strategies help the agent choose the right tool?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { tool } from "langchain";
 import { evaluate } from "mathjs";
 import * as z from "zod";
@@ -57,11 +57,7 @@ async function main() {
   console.log("🎛️ Multi-Tool Agent Demo\n");
   console.log("=".repeat(80) + "\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const modelWithTools = model.bindTools([calculatorTool, weatherTool, searchTool]);
 
