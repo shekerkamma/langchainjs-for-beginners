@@ -13,7 +13,7 @@
  */
 
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { createAgent, HumanMessage } from "langchain";
 import "dotenv/config";
 
@@ -85,11 +85,7 @@ try {
   }
 
   // Create base model
-  const baseModel = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY
-  });
+  const baseModel = createChatModel();
 
   // Use LangChain's built-in retry logic - automatically handles exponential backoff!
   const modelWithRetry = baseModel.withRetry({
