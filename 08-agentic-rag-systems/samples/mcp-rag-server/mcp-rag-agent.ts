@@ -26,16 +26,12 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { createAgent, HumanMessage, tool } from "langchain";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../../scripts/create-model.js";
 import * as z from "zod";
 import "dotenv/config";
 
 // Initialize the LLM
-const model = new ChatOpenAI({
-  model: process.env.AI_MODEL,
-  configuration: { baseURL: process.env.AI_ENDPOINT },
-  apiKey: process.env.AI_API_KEY,
-});
+const model = createChatModel();
 
 // MCP Client for connecting to RAG server
 let mcpClient: Client;
