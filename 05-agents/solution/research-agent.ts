@@ -4,7 +4,7 @@
  * Run: npx tsx 05-agents/solution/research-agent.ts
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { createAgent, HumanMessage, AIMessage, tool } from "langchain";
 import * as z from "zod";
 import { evaluate } from "mathjs";
@@ -79,11 +79,7 @@ async function main() {
   console.log("=".repeat(80) + "\n");
 
   // Create the model
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Create agent using createAgent() - handles ReAct loop automatically
   const agent = createAgent({
