@@ -1,5 +1,5 @@
 import { createAgent, createMiddleware, HumanMessage, tool, ToolMessage } from "langchain";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { evaluate } from "mathjs";
 import * as z from "zod";
 import "dotenv/config";
@@ -57,19 +57,9 @@ const searchTool = tool(
 async function main() {
   console.log("🔧 Agent with Middleware Example\n");
 
-  // Create two models: basic (cheaper) and capable (more powerful)
-  const basicModel = new ChatOpenAI({
-    model: process.env.AI_MODEL, // e.g., gpt-5-mini
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
-
-  const capableModel = new ChatOpenAI({
-    model: process.env.AI_MODEL, // In production, use a more capable model
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-    temperature: 0.1, // More precise for complex tasks
-  });
+  // Create two models: basic (default) and capable (lower temperature = more precise)
+  const basicModel = createChatModel();
+  const capableModel = createChatModel({ temperature: 0.1 });
 
   // Middleware 1: Dynamic Model Selection
   // Switches to more capable model for long conversations
