@@ -11,7 +11,7 @@
  */
 
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { createAgent, HumanMessage, tool } from "langchain";
 import { evaluate } from "mathjs";
 import * as z from "zod";
@@ -74,11 +74,7 @@ async function main() {
     console.log();
 
     // Step 4: Create model
-    const model = new ChatOpenAI({
-      model: process.env.AI_MODEL || "gpt-4o-mini",
-      configuration: { baseURL: process.env.AI_ENDPOINT },
-      apiKey: process.env.AI_API_KEY,
-    });
+    const model = createChatModel();
 
     // Step 5: Create agent with all tools
     console.log("🤖 Creating multi-tool agent...\n");
