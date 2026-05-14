@@ -14,7 +14,7 @@
  */
 
 import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { createAgent, HumanMessage } from "langchain";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -63,11 +63,7 @@ try {
   console.log();
 
   // 2. Create model
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY
-  });
+  const model = createChatModel();
 
   // 3. Create agent with tools from ALL servers
   const agent = createAgent({
