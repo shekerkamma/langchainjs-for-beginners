@@ -3,7 +3,7 @@
  * Run: npx tsx 02-chat-models/samples/robust-chat.ts
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import "dotenv/config";
 
 interface ChatOptions {
@@ -19,11 +19,7 @@ async function robustChat(prompt: string, options: ChatOptions = {}): Promise<st
     fallbackResponse = "I apologize, but I'm having trouble connecting right now. Please try again later.",
   } = options;
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   // Use LangChain's built-in retry logic - automatically handles retries with exponential backoff
   const modelWithRetry = model.withRetry({
