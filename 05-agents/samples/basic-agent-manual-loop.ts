@@ -13,7 +13,7 @@
  * - "What happens if the agent can't answer the question?"
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { AIMessage,HumanMessage,ToolMessage,tool } from "langchain";
 import { evaluate } from "mathjs";
 import * as z from "zod";
@@ -37,11 +37,7 @@ async function main() {
   console.log("🤖 Basic Agent Demo\n");
   console.log("=".repeat(80) + "\n");
 
-  const model = new ChatOpenAI({
-    model: process.env.AI_MODEL,
-    configuration: { baseURL: process.env.AI_ENDPOINT },
-    apiKey: process.env.AI_API_KEY,
-  });
+  const model = createChatModel();
 
   const modelWithTools = model.bindTools([calculatorTool]);
 
