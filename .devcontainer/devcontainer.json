@@ -9,15 +9,17 @@
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm ci",
+  // If Codespace secrets ANTHROPIC_API_KEY / GITHUB_MODELS_KEY are set they are
+  // written into .env automatically; otherwise .env.example is copied as a starter.
+  "postCreateCommand": "npm ci && bash -c 'if [ -n \"$ANTHROPIC_API_KEY\" ]; then printf \"AI_PROVIDER=anthropic\\nANTHROPIC_API_KEY=%s\\nAI_MODEL=claude-sonnet-4-5\\nGITHUB_MODELS_KEY=%s\\nAI_EMBEDDING_MODEL=text-embedding-3-small\\n\" \"$ANTHROPIC_API_KEY\" \"$GITHUB_MODELS_KEY\" > .env && echo \".env written from Codespace secrets\"; else cp .env.example .env && echo \"No secrets found — open .env and add your API keys\"; fi'",
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-windows-ai-studio.windows-ai-studio",
         "GitHub.copilot",
-        "formulahendry.code-runner",
-        "esbenp.prettier-vscode"
+        "GitHub.copilot-chat",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next"
       ]
     }
   }
