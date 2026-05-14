@@ -3,16 +3,12 @@
  * Run: npx tsx 02-chat-models/solution/chatbot.ts
  */
 
-import { ChatOpenAI } from "@langchain/openai";
+import { createChatModel } from "../../scripts/create-model.js";
 import { HumanMessage, AIMessage, SystemMessage } from "langchain";
 import readline from "readline";
 import "dotenv/config";
 
-const model = new ChatOpenAI({
-  model: process.env.AI_MODEL,
-  configuration: { baseURL: process.env.AI_ENDPOINT },
-  apiKey: process.env.AI_API_KEY,
-});
+const model = createChatModel();
 
 const messages: (SystemMessage | HumanMessage | AIMessage)[] = [
   new SystemMessage(
